@@ -1,0 +1,51 @@
+name: Update Valuation Band Charts
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    - cron: '30 11 * * 1-5'  # 매일 평일 한국 시간 20시 30분 (UTC 11시 30분) 실행
+  workflow_dispatch:  # 수동 실행 가능하도록 설정
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # gh-pages 브랜치에 쓰기 권한 필요
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fonts-nanum
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Generate Charts
+        run: |
+          python main.py
+          mkdir -p public
+          cp index.html public/
+          mv samsung_per_band.png public/
+          mv samsung_pbr_band.png public/
+          mv hynix_per_band.png public/
+          mv hynix_pbr_band.png public/
+        env:
+          MPLBACKEND: Agg  # CI 환경에서 GUI 백엔드 사용 안 함
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          force_orphan: true
+          commit_message: "Auto-deploy valuation charts [skip ci]"
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
