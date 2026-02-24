@@ -148,6 +148,7 @@ def plot_band_chart(
     ticker: str,
     metric: str,
     output_filename: str,
+    lang: str = 'ko',
 ) -> None:
     """
     PER 또는 PBR 밴드 차트를 생성하고 PNG 파일로 저장합니다.
@@ -158,7 +159,7 @@ def plot_band_chart(
         metric: 'PER' 또는 'PBR'
         output_filename: 저장할 파일명
     """
-    stock_name = STOCK_INFO[ticker]['name']
+    stock_name = STOCK_INFO[ticker]['name'] if lang == 'ko' else STOCK_INFO[ticker]['name_en']
     band_data = calculate_band_line(df, metric, ticker)
 
     fig, ax = plt.subplots(figsize=(14, 8))
@@ -191,10 +192,11 @@ def plot_band_chart(
         )
 
     # 현재 주가 그리기 (굵은 실선)
+    price_label = f'{stock_name} 주가' if lang == 'ko' else f'{stock_name} Price'
     ax.plot(
         df.index,
         df['종가'],
-        label=f'{stock_name} 주가',
+        label=price_label,
         color='white',
         linewidth=2.0,
         alpha=0.95,
@@ -205,8 +207,9 @@ def plot_band_chart(
     last_price = df['종가'].iloc[-1]
     last_metric = df[metric].iloc[-1]
 
+    current_text = f'현재: {last_price:,.0f}원\n({metric} {last_metric:.1f}x)' if lang == 'ko' else f'Current: {last_price:,.0f} KRW\n({metric} {last_metric:.1f}x)'
     ax.annotate(
-        f'현재: {last_price:,.0f}원\n({metric} {last_metric:.1f}x)',
+        current_text,
         xy=(last_date, last_price),
         xytext=(last_date - pd.Timedelta(days=120), last_price * 1.08),
         ha='center',
@@ -220,15 +223,19 @@ def plot_band_chart(
     kst = timezone(timedelta(hours=9))
     now_str = datetime.now(kst).strftime('%Y-%m-%d %H:%M')
 
+    title = f'{stock_name} {metric} 밴드 차트' if lang == 'ko' else f'{stock_name} {metric} Band Chart'
     ax.set_title(
-        f'{stock_name} {metric} 밴드 차트',
+        title,
         fontsize=18,
         fontweight='bold',
         color='white',
         pad=15,
     )
-    ax.set_xlabel(f'날짜 ({now_str} KST 기준)', fontsize=12, color='#CCCCCC')
-    ax.set_ylabel('주가 (원)', fontsize=12, color='#CCCCCC')
+
+    xlabel = f'날짜 ({now_str} KST 기준)' if lang == 'ko' else f'Date (As of {now_str} KST)'
+    ylabel = '주가 (원)' if lang == 'ko' else 'Stock Price (KRW)'
+    ax.set_xlabel(xlabel, fontsize=12, color='#CCCCCC')
+    ax.set_ylabel(ylabel, fontsize=12, color='#CCCCCC')
     ax.grid(True, linestyle=':', alpha=0.3, color='gray')
 
     # 범례 설정
@@ -284,11 +291,13 @@ def main():
         # 파일명 접두어 결정
         prefix = 'samsung' if ticker == '005930' else 'hynix'
 
-        # PER 밴드 차트 생성
-        plot_band_chart(df, ticker, 'PER', f'{prefix}_per_band.png')
+        # PER/PBR 밴드 차트 생성 (한국어)
+        plot_band_chart(df, ticker, 'PER', f'{prefix}_per_band.png', lang='ko')
+        plot_band_chart(df, ticker, 'PBR', f'{prefix}_pbr_band.png', lang='ko')
 
-        # PBR 밴드 차트 생성
-        plot_band_chart(df, ticker, 'PBR', f'{prefix}_pbr_band.png')
+        # PER/PBR 밴드 차트 생성 (영어)
+        plot_band_chart(df, ticker, 'PER', f'{prefix}_per_band_en.png', lang='en')
+        plot_band_chart(df, ticker, 'PBR', f'{prefix}_pbr_band_en.png', lang='en')
 
     print(f'\n{"=" * 50}')
     print('모든 차트 생성 완료!')
