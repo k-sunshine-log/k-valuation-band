@@ -4,6 +4,10 @@
 
 [🇺🇸 English version](./README_en.md)
 
+👉 **실시간 차트 확인하기**:
+- [한국어 버전](https://k-sunshine-log.github.io/k-valuation-band/)
+- [영어 버전](https://k-sunshine-log.github.io/k-valuation-band/index_en.html)
+
 ## 밴드 차트란?
 
 과거 일정 기간 동안의 PER(주가수익비율)과 PBR(주가순자산비율) 지표 기반으로 밴드 라인을 생성하여, 현재 주가의 밸류에이션 리스크 및 프리미엄(저평가/고평가) 위치를 시각화합니다.

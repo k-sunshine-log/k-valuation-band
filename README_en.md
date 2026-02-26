@@ -4,6 +4,10 @@ Automates the generation of **PER and PBR valuation band charts** for Samsung El
 
 [🇰🇷 한국어 버전](./README.md)
 
+👉 **Check Real-time Chart**:
+- [Korean version](https://k-sunshine-log.github.io/k-valuation-band/)
+- [English version](https://k-sunshine-log.github.io/k-valuation-band/index_en.html)
+
 ## What is a Band Chart?
 
 This project visualizes the historical context of the stock price by generating bands based on the Price-to-Earnings Ratio (PER) and Price-to-Book Ratio (PBR), making it easier to see if the current stock price is undervalued or overvalued.
