@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PER·PBR Band Chart - Samsung Electronics & SK Hynix</title>
+  <meta name="description" content="View the PER·PBR valuation band charts for Samsung Electronics and SK Hynix.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ── Base Reset & Variables ── */
+    :root {
+      --bg-primary: #0d1117;
+      --bg-secondary: #161b22;
+      --bg-card: #1c2128;
+      --border: #30363d;
+      --text-primary: #e6edf3;
+      --text-secondary: #8b949e;
+      --accent-blue: #58a6ff;
+      --accent-green: #3fb950;
+      --accent-purple: #bc8cff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: 'Inter', 'AppleGothic', 'Malgun Gothic', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ── Header ── */
+    header {
+      width: 100%;
+      padding: 24px 16px 16px;
+      text-align: center;
+      background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+      border-bottom: 1px solid var(--border);
+    }
+
+    header h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 6px;
+    }
+
+    header p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    /* ── Tab Navigation ── */
+    .tab-nav {
+      display: flex;
+      gap: 4px;
+      padding: 16px 16px 0;
+      max-width: 960px;
+      width: 100%;
+    }
+
+    .tab-button {
+      flex: 1;
+      padding: 10px 16px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-bottom: none;
+      border-radius: 8px 8px 0 0;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .tab-button:hover {
+      background: var(--bg-card);
+      color: var(--text-primary);
+    }
+
+    .tab-button.active {
+      background: var(--bg-card);
+      color: var(--accent-blue);
+      border-color: var(--accent-blue);
+      border-bottom-color: var(--bg-card);
+    }
+
+    /* ── Tab Content ── */
+    .tab-content-wrapper {
+      max-width: 960px;
+      width: 100%;
+      padding: 0 16px 24px;
+    }
+
+    .tab-content {
+      display: none;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 0 0 12px 12px;
+      padding: 20px;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* ── Chart Section ── */
+    .chart-section {
+      margin-bottom: 24px;
+    }
+
+    .chart-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .chart-label {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+      padding-left: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .chart-label .badge {
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-weight: 600;
+    }
+
+    .badge-per {
+      background: rgba(88, 166, 255, 0.15);
+      color: var(--accent-blue);
+    }
+
+    .badge-pbr {
+      background: rgba(63, 185, 80, 0.15);
+      color: var(--accent-green);
+    }
+
+    .chart-img {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      transition: transform 0.2s ease;
+    }
+
+    .chart-img:hover {
+      transform: scale(1.01);
+    }
+
+    /* ── Divider ── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 20px 0;
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 16px;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    footer a {
+      color: var(--accent-blue);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.3rem;
+      }
+
+      .tab-button {
+        font-size: 0.8rem;
+        padding: 8px 10px;
+      }
+
+      .tab-content {
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div style="display: flex; justify-content: flex-end; max-width: 960px; margin: 0 auto; padding-right: 16px;">
+      <a href="index.html" style="color: var(--text-secondary); text-decoration: none; font-size: 0.85rem; border: 1px solid var(--border); padding: 4px 8px; border-radius: 4px; background: rgba(255,255,255,0.05); transition: background 0.2s;">🇰🇷 한국어</a>
+    </div>
+    <h1>📊 PER·PBR Band Chart</h1>
+    <p>Samsung Electronics & SK Hynix Valuation Bands (Last 5 Years)</p>
+  </header>
+
+  <!-- Tab Navigation -->
+  <nav class="tab-nav">
+    <button class="tab-button active" onclick="switchTab('samsung')">Samsung Electronics</button>
+    <button class="tab-button" onclick="switchTab('hynix')">SK Hynix</button>
+  </nav>
+
+  <!-- Tab Content -->
+  <div class="tab-content-wrapper">
+    <!-- Samsung Tab -->
+    <div id="tab-samsung" class="tab-content active">
+      <div class="chart-section">
+        <div class="chart-label">
+          PER Band
+          <span class="badge badge-per">Price-to-Earnings</span>
+        </div>
+        <img class="chart-img" src="samsung_per_band_en.png" alt="Samsung Electronics PER Band Chart">
+      </div>
+      <div class="divider"></div>
+      <div class="chart-section">
+        <div class="chart-label">
+          PBR Band
+          <span class="badge badge-pbr">Price-to-Book</span>
+        </div>
+        <img class="chart-img" src="samsung_pbr_band_en.png" alt="Samsung Electronics PBR Band Chart">
+      </div>
+    </div>
+
+    <!-- SK Hynix Tab -->
+    <div id="tab-hynix" class="tab-content">
+      <div class="chart-section">
+        <div class="chart-label">
+          PER Band
+          <span class="badge badge-per">Price-to-Earnings</span>
+        </div>
+        <img class="chart-img" src="hynix_per_band_en.png" alt="SK Hynix PER Band Chart">
+      </div>
+      <div class="divider"></div>
+      <div class="chart-section">
+        <div class="chart-label">
+          PBR Band
+          <span class="badge badge-pbr">Price-to-Book</span>
+        </div>
+        <img class="chart-img" src="hynix_pbr_band_en.png" alt="SK Hynix PBR Band Chart">
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Auto-updated on weekdays via GitHub Actions ·
+    <a href="https://github.com/hawkstrike/k-valuation-band" target="_blank">GitHub Repository</a>
+  </footer>
+
+  <script>
+    /**
+     * Tab Switch Function
+     * @param {string} tabId - 'samsung' or 'hynix'
+     */
+    function switchTab(tabId) {
+      // Deactivate all tab buttons
+      document.querySelectorAll('.tab-button').forEach(function (btn) {
+        btn.classList.remove('active');
+      });
+
+      // Hide all tab contents
+      document.querySelectorAll('.tab-content').forEach(function (content) {
+        content.classList.remove('active');
+      });
+
+      // Activate chosen tab
+      document.getElementById('tab-' + tabId).classList.add('active');
+
+      // Activate corresponding button
+      var buttonList = document.querySelectorAll('.tab-button');
+      var targetIndex = tabId === 'samsung' ? 0 : 1;
+      buttonList[targetIndex].classList.add('active');
+    }
+  </script>
+</body>
+
+</html>
